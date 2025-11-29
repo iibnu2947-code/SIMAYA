@@ -10,7 +10,12 @@ import plotly.express as px
 import xlsxwriter
 warnings.filterwarnings('ignore')
 
-
+st.set_page_config(
+    page_title="🐓SIMAYA🐓",
+    page_icon="🐓",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
 def export_to_excel():
     """Export semua data ke Excel termasuk buku besar per akun"""

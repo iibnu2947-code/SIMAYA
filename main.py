@@ -5259,35 +5259,34 @@ elif selected == "Jurnal Umum":
     
     # DAFTAR AKUN YANG DIPERBARUI
     daftar_akun = [
-        "Kas", "Bank", "Deposito", "Investasi Jangka Pendek", 
+    "Kas", "Bank", "Deposito", "Investasi Jangka Pendek", 
     "Piutang Usaha", "Piutang Dagang", "Piutang Lainnya",
-    "Persediaan", "Persediaan Barang Dagang", "Persediaan Bahan Baku",
-    "Persediaan Barang Dalam Proses", "Persediaan Barang Jadi",
+    "Persediaan", "Persediaan Bahan Baku",
     "Perlengkapan", "Asuransi Dibayar Dimuka", "Sewa Dibayar Dimuka",
-    "Pajak Dibayar Dimuka", "Biaya Dibayar Dimuka", "Pendapatan Ditangguhkan",
+    "Biaya Dibayar Dimuka", 
     
     # Aset Tidak Lancar
     "Tanah", "Gedung", "Bangunan", "Kendaraan", "Peralatan", "Mesin",
-    "Inventaris", "Akumulasi Penyusutan", "Aset Tetap Lainnya",
-    "Investasi Jangka Panjang", "Aset Tidak Berwujud", "Goodwill",
-    "Paten", "Merek Dagang", "Hak Cipta", "Aset Sewa Guna Usaha",
-    "Aset Biologis",
+    "Akumulasi Penyusutan", 
+    "Investasi Jangka Panjang",
+    "Merek Dagang", "Hak Cipta",
+    
     
     # Liabilitas Jangka Pendek
     "Utang Usaha", "Utang Dagang", "Utang Bank Jangka Pendek",
-    "Utang Wesel", "Utang Gaji", "Utang Pajak", "Utang Bunga",
-    "Utang Dividen", "Pendapatan Diterima Dimuka", "Biaya Akrual",
-    "Utang Jangka Pendek Lainnya", "Bagian Lancar Utang Jangka Panjang",
+    "Utang Wesel", "Utang Gaji", "Utang Bunga",
+    "Utang Dividen", "Pendapatan Diterima Dimuka",
+    "Utang Jangka Pendek Lainnya", 
     
     # Liabilitas Jangka Panjang
     "Utang Bank Jangka Panjang", "Utang Obligasi", "Utang Hipotek",
-    "Utang Sewa Guna Usaha", "Utang Pensiun", "Utang Jangka Panjang Lainnya",
+    
     
     # Ekuitas
-    "Modal Saham", "Modal Disetor", "Agio Saham",
+    "Modal Disetor", 
     "Laba Ditahan", "Saldo Laba", "Deviden",
     "Prive", "Modal Pemilik", "Modal",
-    "Ekuitas Lainnya", "Cadangan",
+    
     
     # Pendapatan
     "Penjualan", "Pendapatan Jasa", "Pendapatan Lain-lain",
@@ -5297,7 +5296,7 @@ elif selected == "Jurnal Umum":
     "Harga Pokok Penjualan", "Beban Gaji", "Beban Sewa",
     "Beban Listrik dan Air", "Beban Transportasi", "Beban Lain-lain",
     "Beban Asuransi", "Beban Penyusutan", "Beban Bunga",
-    "Beban Pajak", "Beban Administrasi", "Beban Pemeliharaan",
+    "Beban Administrasi", "Beban Pemeliharaan",
     "Beban Perlengkapan", "Beban Iklan", "Beban Research dan Development"
     ]
     
@@ -5950,12 +5949,45 @@ elif selected == "Jurnal Penyesuaian":
     
     # DAFTAR AKUN UNTUK PENYESUAIAN
     daftar_akun_penyesuaian = [
-        "Kas", "Persediaan", "Perlengkapan", "Peralatan", "Kendaraan", "Tanah", 
-        "Piutang", "Aset biologis", "Utang Usaha", "Utang Bank", "Utang Gaji",
-        "Modal", "Penjualan", "Pendapatan", "Harga Pokok Penjualan",
-        "Beban listrik dan air", "Beban transportasi", "Beban gaji", "Beban Lain",
-        "Beban Penyusutan", "Beban Perlengkapan", "Pendapatan Diterima Dimuka",
-        "Beban Dibayar Dimuka", "Piutang Pendapatan", "Utang Beban"
+        "Kas", "Bank", "Deposito", "Investasi Jangka Pendek", 
+    "Piutang Usaha", "Piutang Dagang", "Piutang Lainnya",
+    "Persediaan", "Persediaan Bahan Baku",
+    "Perlengkapan", "Asuransi Dibayar Dimuka", "Sewa Dibayar Dimuka",
+    "Biaya Dibayar Dimuka", 
+    
+    # Aset Tidak Lancar
+    "Tanah", "Gedung", "Bangunan", "Kendaraan", "Peralatan", "Mesin",
+    "Akumulasi Penyusutan", 
+    "Investasi Jangka Panjang",
+    "Merek Dagang", "Hak Cipta",
+    
+    
+    # Liabilitas Jangka Pendek
+    "Utang Usaha", "Utang Dagang", "Utang Bank Jangka Pendek",
+    "Utang Wesel", "Utang Gaji", "Utang Bunga",
+    "Utang Dividen", "Pendapatan Diterima Dimuka",
+    "Utang Jangka Pendek Lainnya", 
+    
+    # Liabilitas Jangka Panjang
+    "Utang Bank Jangka Panjang", "Utang Obligasi", "Utang Hipotek",
+    
+    
+    # Ekuitas
+    "Modal Disetor", 
+    "Laba Ditahan", "Saldo Laba", "Deviden",
+    "Prive", "Modal Pemilik", "Modal", "Ikhtisar Laba/Rugi"
+    
+    
+    # Pendapatan
+    "Penjualan", "Pendapatan Jasa", "Pendapatan Lain-lain",
+    "Pendapatan Bunga", "Pendapatan Sewa",
+    
+    # Beban
+    "Harga Pokok Penjualan", "Beban Gaji", "Beban Sewa",
+    "Beban Listrik dan Air", "Beban Transportasi", "Beban Lain-lain",
+    "Beban Asuransi", "Beban Penyusutan", "Beban Bunga",
+    "Beban Administrasi", "Beban Pemeliharaan",
+    "Beban Perlengkapan", "Beban Iklan", "Beban Research dan Development"
     ]
     
     # FORM TAMBAH JURNAL PENYESUAIAN
@@ -6197,9 +6229,17 @@ elif selected == 'Jurnal Penutup':
     
     # Daftar akun untuk penutupan (fokus pada akun nominal)
     daftar_akun_penutup = [
-        "Pendapatan Jasa", "Pendapatan Lain", "Beban Gaji", "Beban Sewa", 
-        "Beban Listrik dan Air", "Beban Transportasi", "Beban Lain-lain",
-        "Ikhtisar Laba Rugi", "Modal"
+           # Pendapatan
+    "Penjualan", "Pendapatan Jasa", "Pendapatan Lain-lain",
+    "Pendapatan Bunga", "Pendapatan Sewa",
+    
+    # Beban
+    "Harga Pokok Penjualan", "Beban Gaji", "Beban Sewa",
+    "Beban Listrik dan Air", "Beban Transportasi", "Beban Lain-lain",
+    "Beban Asuransi", "Beban Penyusutan", "Beban Bunga",
+    "Beban Administrasi", "Beban Pemeliharaan",
+    "Beban Perlengkapan", "Beban Iklan", "Beban Research dan Development"
+    
     ]
     
     # Form jurnal penutup dengan format debit-kredit

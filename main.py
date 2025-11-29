@@ -10,6 +10,8 @@ import plotly.express as px
 import xlsxwriter
 warnings.filterwarnings('ignore')
 
+
+
 def export_to_excel():
     """Export semua data ke Excel termasuk buku besar per akun"""
     try:
@@ -153,65 +155,82 @@ def init_database():
         print(f"❌ Error dalam init_database: {str(e)}")
         
 # Tambahkan di bagian inisialisasi sistem (setelah init_database())
-def init_session_state():
+def init_session_state_fixed():
     """Inisialisasi session state dengan nilai default yang aman - VERSI DIPERBAIKI"""
-    default_dataframes = {
-        "df_jurnal_umum": ["No", "Tanggal", "Akun Debit", "Debit (Rp)", "Akun Kredit", "Kredit (Rp)"],
-        "df_jurnal_penyesuaian": ["No", "Tanggal", "Keterangan", "Akun Debit", "Debit (Rp)", "Akun Kredit", "Kredit (Rp)"],
-        "df_neraca_saldo_periode_sebelumnya": ["No", "Nama Akun", "Debit (Rp)", "Kredit (Rp)"],
-        "df_buku_besar": ["No", "Nama Akun", "Debit (Rp)", "Kredit (Rp)", "Saldo (Rp)"],
-        "df_neraca_saldo": ["No", "Nama Akun", "Debit (Rp)", "Kredit (Rp)"],
-        "df_jurnal_penutup": ["No", "Tanggal", "Keterangan", "Akun Debit", "Debit (Rp)", "Akun Kredit", "Kredit (Rp)"],
-        "df_neraca_saldo_setelah_penutup": ["No", "Nama Akun", "Debit (Rp)", "Kredit (Rp)"],
-        "df_penjualan": ["No", "Tanggal", "Keterangan", "Barang", "Jumlah", "Harga Jual", "Total Penjualan", "HPP", "Total HPP"],
-        "df_pembelian": ["No", "Tanggal", "Keterangan", "Barang", "Jumlah", "Harga Beli", "Total Pembelian"],
-        "df_persediaan": ["Barang", "Stok Awal", "Pembelian", "Penjualan", "Stok Akhir", "Harga Rata-rata", "Total Nilai"],
-        "df_riwayat_persediaan": ["Tanggal", "Jenis", "Barang", "Jumlah", "Harga", "Total", "Stok", "Keterangan"],
-        "df_laporan_laba_rugi": ["Keterangan", "Nilai (Rp)"],
-        "df_laporan_perubahan_modal": ["Keterangan", "Nilai (Rp)"],
-        "df_laporan_posisi_keuangan": ["Keterangan", "Nilai (Rp)"]
-    }
-    
-    for df_key, columns in default_dataframes.items():
-        if df_key not in st.session_state:
-            st.session_state[df_key] = pd.DataFrame(columns=columns)
-    
-    # Inisialisasi counter transaksi
-    if "transaction_counter" not in st.session_state:
-        st.session_state.transaction_counter = 1
-    
-    # Inisialisasi buku besar per akun
-    if "buku_besar_per_akun" not in st.session_state:
-        st.session_state.buku_besar_per_akun = {}
-    
-    # Inisialisasi tanggal awal periode
-    if "tanggal_awal_periode" not in st.session_state:
-        from datetime import date
-        st.session_state.tanggal_awal_periode = date.today().replace(day=1)
-    
-    # Inisialisasi variabel laporan keuangan
-    if "total_pendapatan" not in st.session_state:
-        st.session_state.total_pendapatan = 0
-    if "total_beban" not in st.session_state:
-        st.session_state.total_beban = 0
-    if "laba_bersih" not in st.session_state:
-        st.session_state.laba_bersih = 0
-    if "modal_awal" not in st.session_state:
-        st.session_state.modal_awal = 0
-    if "modal_akhir" not in st.session_state:
-        st.session_state.modal_akhir = 0
-    
-    # INISIALISASI PENTING: Pastikan neraca saldo periode sebelumnya ada data contoh untuk testing
-    if st.session_state.df_neraca_saldo_periode_sebelumnya.empty:
-        # Data contoh untuk memulai sistem
-        contoh_data = [
-            {"No": 1, "Nama Akun": "Kas", "Debit (Rp)": 100000000, "Kredit (Rp)": 0},
-            {"No": 2, "Nama Akun": "Persediaan", "Debit (Rp)": 50000000, "Kredit (Rp)": 0},
-            {"No": 3, "Nama Akun": "Peralatan", "Debit (Rp)": 75000000, "Kredit (Rp)": 0},
-            {"No": 4, "Nama Akun": "Utang Usaha", "Debit (Rp)": 0, "Kredit (Rp)": 45000000},
-            {"No": 5, "Nama Akun": "Modal", "Debit (Rp)": 0, "Kredit (Rp)": 180000000},
-        ]
-        st.session_state.df_neraca_saldo_periode_sebelumnya = pd.DataFrame(contoh_data)
+    try:
+        default_dataframes = {
+            "df_jurnal_umum": ["No", "Tanggal", "Akun Debit", "Debit (Rp)", "Akun Kredit", "Kredit (Rp)"],
+            "df_jurnal_penyesuaian": ["No", "Tanggal", "Keterangan", "Akun Debit", "Debit (Rp)", "Akun Kredit", "Kredit (Rp)"],
+            "df_neraca_saldo_periode_sebelumnya": ["No", "Nama Akun", "Debit (Rp)", "Kredit (Rp)"],
+            "df_buku_besar": ["No", "Nama Akun", "Debit (Rp)", "Kredit (Rp)", "Saldo (Rp)"],
+            "df_neraca_saldo": ["No", "Nama Akun", "Debit (Rp)", "Kredit (Rp)"],
+            "df_jurnal_penutup": ["No", "Tanggal", "Keterangan", "Akun Debit", "Debit (Rp)", "Akun Kredit", "Kredit (Rp)"],
+            "df_neraca_saldo_setelah_penutup": ["No", "Nama Akun", "Debit (Rp)", "Kredit (Rp)"],
+            "df_penjualan": ["No", "Tanggal", "Keterangan", "Barang", "Jumlah", "Harga Jual", "Total Penjualan", "HPP", "Total HPP"],
+            "df_pembelian": ["No", "Tanggal", "Keterangan", "Barang", "Jumlah", "Harga Beli", "Total Pembelian"],
+            "df_persediaan": ["Barang", "Stok Awal", "Pembelian", "Penjualan", "Stok Akhir", "Harga Rata-rata", "Total Nilai"],
+            "df_riwayat_persediaan": ["Tanggal", "Jenis", "Barang", "Jumlah", "Harga", "Total", "Stok", "Keterangan"],
+            "df_laporan_laba_rugi": ["Keterangan", "Nilai (Rp)"],
+            "df_laporan_perubahan_modal": ["Keterangan", "Nilai (Rp)"],
+            "df_laporan_posisi_keuangan": ["Keterangan", "Nilai (Rp)"]
+        }
+        
+        for df_key, columns in default_dataframes.items():
+            if df_key not in st.session_state:
+                st.session_state[df_key] = pd.DataFrame(columns=columns)
+        
+        # Inisialisasi counter transaksi
+        if "transaction_counter" not in st.session_state:
+            st.session_state.transaction_counter = 1
+        
+        # Inisialisasi buku besar per akun
+        if "buku_besar_per_akun" not in st.session_state:
+            st.session_state.buku_besar_per_akun = {}
+        
+        # INISIALISASI PENTING: Pastikan tanggal_awal_periode ada
+        if "tanggal_awal_periode" not in st.session_state:
+            from datetime import date
+            # Default: awal bulan ini
+            st.session_state.tanggal_awal_periode = date.today().replace(day=1)
+            print("✅ tanggal_awal_periode diinisialisasi:", st.session_state.tanggal_awal_periode)
+        
+        # INISIALISASI PENTING: Pastikan periode_sekarang ada
+        if "periode_sekarang" not in st.session_state:
+            from datetime import datetime
+            st.session_state.periode_sekarang = datetime.now().strftime("%B %Y")
+            print("✅ periode_sekarang diinisialisasi:", st.session_state.periode_sekarang)
+        
+        # Inisialisasi variabel laporan keuangan
+        if "total_pendapatan" not in st.session_state:
+            st.session_state.total_pendapatan = 0
+        if "total_beban" not in st.session_state:
+            st.session_state.total_beban = 0
+        if "laba_bersih" not in st.session_state:
+            st.session_state.laba_bersih = 0
+        if "modal_awal" not in st.session_state:
+            st.session_state.modal_awal = 0
+        if "modal_akhir" not in st.session_state:
+            st.session_state.modal_akhir = 0
+            
+        # INISIALISASI PENTING: Pastikan neraca saldo periode sebelumnya ada data contoh untuk testing
+        if "df_neraca_saldo_periode_sebelumnya" in st.session_state and st.session_state.df_neraca_saldo_periode_sebelumnya.empty:
+            # Data contoh untuk memulai sistem
+            contoh_data = [
+                {"No": 1, "Nama Akun": "Kas", "Debit (Rp)": 100000000, "Kredit (Rp)": 0},
+                {"No": 2, "Nama Akun": "Persediaan", "Debit (Rp)": 50000000, "Kredit (Rp)": 0},
+                {"No": 3, "Nama Akun": "Peralatan", "Debit (Rp)": 75000000, "Kredit (Rp)": 0},
+                {"No": 4, "Nama Akun": "Utang Usaha", "Debit (Rp)": 0, "Kredit (Rp)": 45000000},
+                {"No": 5, "Nama Akun": "Modal", "Debit (Rp)": 0, "Kredit (Rp)": 180000000},
+            ]
+            st.session_state.df_neraca_saldo_periode_sebelumnya = pd.DataFrame(contoh_data)
+            print("✅ Data contoh neraca saldo periode sebelumnya diinisialisasi")
+        
+        print("✅ Session state berhasil diinisialisasi dengan lengkap")
+        return True
+        
+    except Exception as e:
+        print(f"❌ Error dalam init_session_state_fixed: {str(e)}")
+        return False
 
 def load_data_periode(periode):
     """Memuat data untuk periode tertentu - VERSI DIPERBAIKI"""
@@ -309,7 +328,7 @@ def save_to_database():
         return False
 
 def simpan_ke_riwayat_periode(periode, data_neraca_setelah_penutup):
-    """Menyimpan neraca saldo setelah penutup ke riwayat periode"""
+    """Menyimpan neraca saldo setelah penutup ke riwayat periode - VERSI DIPERBAIKI"""
     try:
         if os.path.exists("database_keuangan.xlsx"):
             # Load existing data
@@ -346,6 +365,53 @@ def simpan_ke_riwayat_periode(periode, data_neraca_setelah_penutup):
     except Exception as e:
         print(f"❌ Error menyimpan riwayat periode: {str(e)}")
         return False
+
+def muat_dari_riwayat_periode(periode):
+    """Memuat neraca saldo setelah penutup dari riwayat periode - VERSI DIPERBAIKI"""
+    try:
+        if os.path.exists("database_keuangan.xlsx"):
+            df_riwayat = pd.read_excel("database_keuangan.xlsx", sheet_name="riwayat_periode")
+            
+            if not df_riwayat.empty and periode in df_riwayat["Periode"].values:
+                data_json = df_riwayat[df_riwayat["Periode"] == periode]["Data"].iloc[0]
+                data_neraca = pd.read_json(data_json)
+                print(f"✅ Data periode {periode} berhasil dimuat dari riwayat")
+                return data_neraca
+    except Exception as e:
+        print(f"❌ Error memuat riwayat periode: {str(e)}")
+    
+    return pd.DataFrame()
+
+def dapatkan_periode_sebelumnya(periode_sekarang):
+    """Mendapatkan nama periode sebelumnya berdasarkan periode saat ini"""
+    try:
+        bulan_tahun = periode_sekarang.split()
+        if len(bulan_tahun) == 2:
+            bulan, tahun = bulan_tahun
+            tahun = int(tahun)
+            
+            # Mapping nama bulan ke angka
+            bulan_ke_angka = {
+                "Januari": 1, "Februari": 2, "Maret": 3, "April": 4, "Mei": 5, "Juni": 6,
+                "Juli": 7, "Agustus": 8, "September": 9, "Oktober": 10, "November": 11, "Desember": 12
+            }
+            
+            if bulan in bulan_ke_angka:
+                bulan_angka = bulan_ke_angka[bulan]
+                
+                # Hitung periode sebelumnya
+                if bulan_angka == 1:
+                    bulan_sebelumnya = "Desember"
+                    tahun_sebelumnya = tahun - 1
+                else:
+                    bulan_sebelumnya = list(bulan_ke_angka.keys())[bulan_angka - 2]
+                    tahun_sebelumnya = tahun
+                
+                return f"{bulan_sebelumnya} {tahun_sebelumnya}"
+    except Exception as e:
+        print(f"Error mendapatkan periode sebelumnya: {e}")
+    
+    return "Periode Sebelumnya"
 
 def muat_dari_riwayat_periode(periode):
     """Memuat neraca saldo setelah penutup dari riwayat periode"""
@@ -407,6 +473,26 @@ def load_from_database():
     except Exception as e:
         print(f"❌ Error in load_from_database: {str(e)}")
         return False
+    
+    
+def safe_dataframe_display(df):
+    """Membuat DataFrame yang aman untuk ditampilkan dengan format yang benar"""
+    try:
+        df_display = df.copy()
+        
+        # Format kolom numerik ke string Rupiah
+        numeric_columns = ["Debit (Rp)", "Kredit (Rp)", "Saldo (Rp)"]
+        
+        for col in numeric_columns:
+            if col in df_display.columns:
+                df_display[col] = df_display[col].apply(
+                    lambda x: f"Rp {safe_float_convert(x):,.0f}" if pd.notna(x) and x != "" and safe_float_convert(x) != 0 else ""
+                )
+        
+        return df_display
+    except Exception as e:
+        print(f"Error dalam safe_dataframe_display: {str(e)}")
+        return df
 
 
     # ==================== INISIALISASI SISTEM ====================
@@ -801,7 +887,6 @@ def safe_float_convert(value, default=0.0):
     except (ValueError, TypeError):
         return default
     
-    
 def parse_rupiah(rupiah_str):
     """Parse string rupiah menjadi float"""
     if not rupiah_str:
@@ -1131,146 +1216,7 @@ def update_buku_besar():
         st.session_state.df_buku_besar = pd.DataFrame(columns=["No", "Nama Akun", "Debit (Rp)", "Kredit (Rp)", "Saldo (Rp)"])
         st.session_state.df_neraca_saldo = pd.DataFrame(columns=["No", "Nama Akun", "Debit (Rp)", "Kredit (Rp)"])
         
-def update_buku_besar_komprehensif():
-    """
-    Update buku besar yang menggabungkan data dari:
-    - Jurnal Umum
-    - Jurnal Penyesuaian  
-    - Jurnal Penutup
-    Dengan keterangan sumber transaksi
-    """
-    try:
-        # Kumpulkan semua transaksi dari berbagai sumber
-        semua_transaksi = []
-        
-        # 1. Transaksi dari Jurnal Umum
-        if "df_jurnal_umum" in st.session_state and not st.session_state.df_jurnal_umum.empty:
-            for _, row in st.session_state.df_jurnal_umum.iterrows():
-                # Entri Debit dari Jurnal Umum
-                if row["Debit (Rp)"] > 0:
-                    semua_transaksi.append({
-                        "Tanggal": row["Tanggal"],
-                        "Sumber": "Jurnal Umum",
-                        "Keterangan": f"Transaksi No {row['No']}",
-                        "Nama Akun": row["Akun Debit"],
-                        "Debit (Rp)": row["Debit (Rp)"],
-                        "Kredit (Rp)": 0
-                    })
-                # Entri Kredit dari Jurnal Umum
-                if row["Kredit (Rp)"] > 0:
-                    semua_transaksi.append({
-                        "Tanggal": row["Tanggal"],
-                        "Sumber": "Jurnal Umum", 
-                        "Keterangan": f"Transaksi No {row['No']}",
-                        "Nama Akun": row["Akun Kredit"],
-                        "Debit (Rp)": 0,
-                        "Kredit (Rp)": row["Kredit (Rp)"]
-                    })
-        
-        # 2. Transaksi dari Jurnal Penyesuaian
-        if "df_jurnal_penyesuaian" in st.session_state and not st.session_state.df_jurnal_penyesuaian.empty:
-            for _, row in st.session_state.df_jurnal_penyesuaian.iterrows():
-                # Entri Debit dari Penyesuaian
-                if row["Debit (Rp)"] > 0:
-                    semua_transaksi.append({
-                        "Tanggal": row["Tanggal"],
-                        "Sumber": "Jurnal Penyesuaian",
-                        "Keterangan": row["Keterangan"],
-                        "Nama Akun": row["Akun Debit"],
-                        "Debit (Rp)": row["Debit (Rp)"],
-                        "Kredit (Rp)": 0
-                    })
-                # Entri Kredit dari Penyesuaian
-                if row["Kredit (Rp)"] > 0:
-                    semua_transaksi.append({
-                        "Tanggal": row["Tanggal"],
-                        "Sumber": "Jurnal Penyesuaian",
-                        "Keterangan": row["Keterangan"],
-                        "Nama Akun": row["Akun Kredit"],
-                        "Debit (Rp)": 0,
-                        "Kredit (Rp)": row["Kredit (Rp)"]
-                    })
-        
-        # 3. Transaksi dari Jurnal Penutup
-        if "df_jurnal_penutup" in st.session_state and not st.session_state.df_jurnal_penutup.empty:
-            for _, row in st.session_state.df_jurnal_penutup.iterrows():
-                # Entri Debit dari Penutup
-                if row["Debit (Rp)"] > 0:
-                    semua_transaksi.append({
-                        "Tanggal": row["Tanggal"],
-                        "Sumber": "Jurnal Penutup",
-                        "Keterangan": row["Keterangan"],
-                        "Nama Akun": row["Akun Debit"],
-                        "Debit (Rp)": row["Debit (Rp)"],
-                        "Kredit (Rp)": 0
-                    })
-                # Entri Kredit dari Penutup
-                if row["Kredit (Rp)"] > 0:
-                    semua_transaksi.append({
-                        "Tanggal": row["Tanggal"],
-                        "Sumber": "Jurnal Penutup",
-                        "Keterangan": row["Keterangan"],
-                        "Nama Akun": row["Akun Kredit"],
-                        "Debit (Rp)": 0,
-                        "Kredit (Rp)": row["Kredit (Rp)"]
-                    })
-        
-        # Jika tidak ada transaksi, buat buku besar kosong
-        if not semua_transaksi:
-            st.session_state.df_buku_besar = pd.DataFrame(columns=[
-                "No", "Tanggal", "Sumber", "Keterangan", "Nama Akun", "Debit (Rp)", "Kredit (Rp)", "Saldo (Rp)"
-            ])
-            return
-        
-        # Konversi ke DataFrame
-        df_semua_transaksi = pd.DataFrame(semua_transaksi)
-        
-        # Urutkan berdasarkan tanggal
-        df_semua_transaksi = df_semua_transaksi.sort_values("Tanggal").reset_index(drop=True)
-        
-        # Hitung saldo per akun
-        saldo_akun = {}
-        buku_besar_detail = []
-        
-        for _, transaksi in df_semua_transaksi.iterrows():
-            akun = transaksi["Nama Akun"]
-            debit = transaksi["Debit (Rp)"]
-            kredit = transaksi["Kredit (Rp)"]
-            
-            # Inisialisasi saldo akun jika belum ada
-            if akun not in saldo_akun:
-                saldo_akun[akun] = 0
-            
-            # Update saldo
-            saldo_akun[akun] += debit - kredit
-            
-            # Tambahkan ke buku besar detail
-            buku_besar_detail.append({
-                "Tanggal": transaksi["Tanggal"],
-                "Sumber": transaksi["Sumber"],
-                "Keterangan": transaksi["Keterangan"],
-                "Nama Akun": akun,
-                "Debit (Rp)": debit,
-                "Kredit (Rp)": kredit,
-                "Saldo (Rp)": saldo_akun[akun]
-            })
-        
-        # Buat DataFrame buku besar
-        df_buku_besar = pd.DataFrame(buku_besar_detail)
-        
-        # Tambahkan nomor urut
-        df_buku_besar.insert(0, "No", range(1, len(df_buku_besar) + 1))
-        
-        # Simpan ke session state
-        st.session_state.df_buku_besar = df_buku_besar
-        
-        # Update neraca saldo
-        update_neraca_saldo_dari_buku_besar(df_buku_besar)
-        
-        print(f"✅ Buku besar diperbarui: {len(df_buku_besar)} transaksi dari {len(semua_transaksi)} entri")
-        
-    except Exception as e:
-        st.error(f"Error dalam update_buku_besar_komprehensif: {str(e)}")
+
         
         
         
@@ -1405,7 +1351,12 @@ def update_buku_besar_per_akun():
                         "Kredit (Rp)": kredit_val,
                         "No_Transaksi": safe_float_convert(row["No"], 0)
                     })
-        
+                    
+                update_neraca_saldo_dari_buku_besar_per_akun(st.session_state.buku_besar_per_akun)
+        if not st.session_state.tanggal_awal_periode:
+            st.warning("Silakan atur periode akuntansi terlebih dahulu di menu 'Neraca Saldo Periode Sebelumnya'.")
+            return 
+
         # Jika tidak ada transaksi, buat buku besar kosong
         if not semua_transaksi:
             st.session_state.df_buku_besar = pd.DataFrame(columns=[
@@ -1506,6 +1457,255 @@ def update_buku_besar_per_akun():
         ])
         st.session_state.buku_besar_per_akun = {}
 
+def update_buku_besar_per_akun_fixed():
+    """
+    Update buku besar yang dikelompokkan per akun - VERSI DIPERBAIKI DENGAN ERROR HANDLING
+    """
+    try:
+        # PERBAIKAN: Pastikan tanggal_awal_periode sudah diinisialisasi
+        if "tanggal_awal_periode" not in st.session_state:
+            from datetime import date
+            st.session_state.tanggal_awal_periode = date.today().replace(day=1)
+            st.warning("⚠️ Tanggal awal periode diatur otomatis ke awal bulan ini. Silakan atur di menu 'Neraca Saldo Periode Sebelumnya' jika perlu disesuaikan.")
+            print("⚠️ tanggal_awal_periode diatur otomatis")
+        
+        # PERBAIKAN: Pastikan periode_sekarang sudah diinisialisasi
+        if "periode_sekarang" not in st.session_state:
+            from datetime import datetime
+            st.session_state.periode_sekarang = datetime.now().strftime("%B %Y")
+            print("⚠️ periode_sekarang diatur otomatis")
+        
+        # Kumpulkan semua transaksi dari berbagai sumber
+        semua_transaksi = []
+        
+        # ========== 1. TAMBAHKAN SALDO AWAL DARI NERACA SALDO PERIODE SEBELUMNYA ==========
+        if "df_neraca_saldo_periode_sebelumnya" in st.session_state and not st.session_state.df_neraca_saldo_periode_sebelumnya.empty:
+            for _, row in st.session_state.df_neraca_saldo_periode_sebelumnya.iterrows():
+                nama_akun = row["Nama Akun"]
+                saldo_debit = safe_float_convert(row["Debit (Rp)"])
+                saldo_kredit = safe_float_convert(row["Kredit (Rp)"])
+                
+                # Hitung saldo awal (Debit - Kredit)
+                saldo_awal = saldo_debit - saldo_kredit
+                
+                if saldo_awal != 0:
+                    # Tambahkan sebagai transaksi saldo awal
+                    if saldo_awal > 0:
+                        semua_transaksi.append({
+                            "Tanggal": st.session_state.tanggal_awal_periode,
+                            "Sumber": "Saldo Awal",
+                            "Keterangan": f"Saldo Awal Periode {st.session_state.periode_sekarang}",
+                            "Nama Akun": nama_akun,
+                            "Debit (Rp)": saldo_awal,
+                            "Kredit (Rp)": 0.0,
+                            "No_Transaksi": 0  # Nomor khusus untuk saldo awal
+                        })
+                    else:
+                        semua_transaksi.append({
+                            "Tanggal": st.session_state.tanggal_awal_periode,
+                            "Sumber": "Saldo Awal", 
+                            "Keterangan": f"Saldo Awal Periode {st.session_state.periode_sekarang}",
+                            "Nama Akun": nama_akun,
+                            "Debit (Rp)": 0.0,
+                            "Kredit (Rp)": abs(saldo_awal),
+                            "No_Transaksi": 0
+                        })
+                    print(f"✅ Menambahkan saldo awal untuk {nama_akun}: {saldo_awal:,.0f}")
+
+        # ========== 2. TRANSAKSI DARI JURNAL UMUM ==========
+        if "df_jurnal_umum" in st.session_state and not st.session_state.df_jurnal_umum.empty:
+            for _, row in st.session_state.df_jurnal_umum.iterrows():
+                # Pastikan tipe data numerik dengan safe_float_convert
+                debit_val = safe_float_convert(row["Debit (Rp)"])
+                kredit_val = safe_float_convert(row["Kredit (Rp)"])
+                
+                # Entri Debit dari Jurnal Umum
+                if debit_val > 0:
+                    semua_transaksi.append({
+                        "Tanggal": row["Tanggal"],
+                        "Sumber": "Jurnal Umum",
+                        "Keterangan": f"Transaksi No {row['No']}",
+                        "Nama Akun": str(row["Akun Debit"]),
+                        "Debit (Rp)": debit_val,
+                        "Kredit (Rp)": 0.0,
+                        "No_Transaksi": safe_float_convert(row["No"], 0)
+                    })
+                
+                # Entri Kredit dari Jurnal Umum
+                if kredit_val > 0:
+                    semua_transaksi.append({
+                        "Tanggal": row["Tanggal"],
+                        "Sumber": "Jurnal Umum", 
+                        "Keterangan": f"Transaksi No {row['No']}",
+                        "Nama Akun": str(row["Akun Kredit"]),
+                        "Debit (Rp)": 0.0,
+                        "Kredit (Rp)": kredit_val,
+                        "No_Transaksi": safe_float_convert(row["No"], 0)
+                    })
+
+        # ========== 3. TRANSAKSI DARI JURNAL PENYESUAIAN ==========
+        if "df_jurnal_penyesuaian" in st.session_state and not st.session_state.df_jurnal_penyesuaian.empty:
+            for _, row in st.session_state.df_jurnal_penyesuaian.iterrows():
+                debit_val = safe_float_convert(row["Debit (Rp)"])
+                kredit_val = safe_float_convert(row["Kredit (Rp)"])
+                
+                # Entri Debit dari Penyesuaian
+                if debit_val > 0:
+                    semua_transaksi.append({
+                        "Tanggal": row["Tanggal"],
+                        "Sumber": "Jurnal Penyesuaian",
+                        "Keterangan": str(row["Keterangan"]),
+                        "Nama Akun": str(row["Akun Debit"]),
+                        "Debit (Rp)": debit_val,
+                        "Kredit (Rp)": 0.0,
+                        "No_Transaksi": safe_float_convert(row["No"], 0)
+                    })
+                
+                # Entri Kredit dari Penyesuaian
+                if kredit_val > 0:
+                    semua_transaksi.append({
+                        "Tanggal": row["Tanggal"],
+                        "Sumber": "Jurnal Penyesuaian",
+                        "Keterangan": str(row["Keterangan"]),
+                        "Nama Akun": str(row["Akun Kredit"]),
+                        "Debit (Rp)": 0.0,
+                        "Kredit (Rp)": kredit_val,
+                        "No_Transaksi": safe_float_convert(row["No"], 0)
+                    })
+
+        # ========== 4. TRANSAKSI DARI JURNAL PENUTUP ==========
+        if "df_jurnal_penutup" in st.session_state and not st.session_state.df_jurnal_penutup.empty:
+            for _, row in st.session_state.df_jurnal_penutup.iterrows():
+                debit_val = safe_float_convert(row["Debit (Rp)"])
+                kredit_val = safe_float_convert(row["Kredit (Rp)"])
+                
+                # Entri Debit dari Penutup
+                if debit_val > 0:
+                    semua_transaksi.append({
+                        "Tanggal": row["Tanggal"],
+                        "Sumber": "Jurnal Penutup",
+                        "Keterangan": str(row["Keterangan"]),
+                        "Nama Akun": str(row["Akun Debit"]),
+                        "Debit (Rp)": debit_val,
+                        "Kredit (Rp)": 0.0,
+                        "No_Transaksi": safe_float_convert(row["No"], 0)
+                    })
+                
+                # Entri Kredit dari Penutup
+                if kredit_val > 0:
+                    semua_transaksi.append({
+                        "Tanggal": row["Tanggal"],
+                        "Sumber": "Jurnal Penutup",
+                        "Keterangan": str(row["Keterangan"]),
+                        "Nama Akun": str(row["Akun Kredit"]),
+                        "Debit (Rp)": 0.0,
+                        "Kredit (Rp)": kredit_val,
+                        "No_Transaksi": safe_float_convert(row["No"], 0)
+                    })
+
+        # ========== 5. PROSES BUKU BESAR PER AKUN ==========
+        if not semua_transaksi:
+            st.session_state.df_buku_besar = pd.DataFrame(columns=[
+                "No", "Tanggal", "Sumber", "Keterangan", "Nama Akun", "Debit (Rp)", "Kredit (Rp)", "Saldo (Rp)"
+            ])
+            st.session_state.buku_besar_per_akun = {}
+            st.info("📊 Buku Besar masih kosong. Silakan tambah transaksi di Jurnal Umum terlebih dahulu.")
+            return
+
+        # Konversi ke DataFrame dengan validasi
+        df_semua_transaksi = pd.DataFrame(semua_transaksi)
+        
+        # PERBAIKAN: Validasi dan cleaning data sebelum processing
+        if not df_semua_transaksi.empty:
+            # Pastikan kolom tanggal dalam format yang benar
+            df_semua_transaksi['Tanggal'] = pd.to_datetime(df_semua_transaksi['Tanggal'], errors='coerce').dt.date
+            
+            # Pastikan tipe data numerik konsisten
+            df_semua_transaksi['Debit (Rp)'] = df_semua_transaksi['Debit (Rp)'].apply(safe_float_convert)
+            df_semua_transaksi['Kredit (Rp)'] = df_semua_transaksi['Kredit (Rp)'].apply(safe_float_convert)
+            df_semua_transaksi['No_Transaksi'] = df_semua_transaksi['No_Transaksi'].apply(lambda x: int(safe_float_convert(x, 0)))
+            
+            # Hapus baris dengan Nama Akun yang tidak valid
+            df_semua_transaksi = df_semua_transaksi[df_semua_transaksi['Nama Akun'].notna()]
+            df_semua_transaksi = df_semua_transaksi[df_semua_transaksi['Nama Akun'] != '']
+            
+            # Urutkan berdasarkan tanggal dan nama akun
+            df_semua_transaksi = df_semua_transaksi.sort_values(["Nama Akun", "Tanggal", "No_Transaksi"]).reset_index(drop=True)
+
+        # Buat struktur buku besar per akun
+        buku_besar_per_akun = {}
+        
+        # Kelompokkan transaksi per akun
+        for akun in df_semua_transaksi["Nama Akun"].unique():
+            transaksi_akun = df_semua_transaksi[df_semua_transaksi["Nama Akun"] == akun].copy()
+            transaksi_akun = transaksi_akun.sort_values(["Tanggal", "No_Transaksi"]).reset_index(drop=True)
+            
+            # Hitung saldo running untuk akun ini
+            saldo_running = 0.0
+            detail_akun = []
+            
+            for idx, transaksi in transaksi_akun.iterrows():
+                debit = safe_float_convert(transaksi["Debit (Rp)"])
+                kredit = safe_float_convert(transaksi["Kredit (Rp)"])
+                saldo_running += debit - kredit
+                
+                detail_akun.append({
+                    "No": idx + 1,
+                    "Tanggal": transaksi["Tanggal"],
+                    "Sumber": transaksi["Sumber"],
+                    "Keterangan": transaksi["Keterangan"],
+                    "No_Transaksi": int(transaksi["No_Transaksi"]),
+                    "Debit (Rp)": debit,
+                    "Kredit (Rp)": kredit,
+                    "Saldo (Rp)": saldo_running
+                })
+            
+            # Simpan detail akun
+            if detail_akun:  # Hanya simpan jika ada transaksi
+                buku_besar_per_akun[akun] = pd.DataFrame(detail_akun)
+
+        # Simpan ke session state
+        st.session_state.buku_besar_per_akun = buku_besar_per_akun
+        
+        # Juga simpan dalam format flat untuk kompatibilitas
+        semua_detail = []
+        for akun, df_akun in buku_besar_per_akun.items():
+            for _, row in df_akun.iterrows():
+                semua_detail.append({
+                    "No": int(row["No"]),
+                    "Tanggal": row["Tanggal"],
+                    "Sumber": row["Sumber"],
+                    "Keterangan": row["Keterangan"],
+                    "Nama Akun": akun,
+                    "Debit (Rp)": safe_float_convert(row["Debit (Rp)"]),
+                    "Kredit (Rp)": safe_float_convert(row["Kredit (Rp)"]),
+                    "Saldo (Rp)": safe_float_convert(row["Saldo (Rp)"])
+                })
+        
+        if semua_detail:
+            st.session_state.df_buku_besar = pd.DataFrame(semua_detail)
+        else:
+            st.session_state.df_buku_besar = pd.DataFrame(columns=[
+                "No", "Tanggal", "Sumber", "Keterangan", "Nama Akun", "Debit (Rp)", "Kredit (Rp)", "Saldo (Rp)"
+            ])
+        
+        # Update neraca saldo
+        update_neraca_saldo_dari_buku_besar_per_akun(buku_besar_per_akun)
+        
+        print(f"✅ Buku besar per akun diperbarui: {len(buku_besar_per_akun)} akun")
+        return True
+        
+    except Exception as e:
+        st.error(f"❌ Error dalam update_buku_besar_per_akun_fixed: {str(e)}")
+        import traceback
+        st.error(f"Detail error: {traceback.format_exc()}")
+        # Fallback: buat buku besar kosong
+        st.session_state.df_buku_besar = pd.DataFrame(columns=[
+            "No", "Tanggal", "Sumber", "Keterangan", "Nama Akun", "Debit (Rp)", "Kredit (Rp)", "Saldo (Rp)"
+        ])
+        st.session_state.buku_besar_per_akun = {}
+        return False
+    
 def update_neraca_saldo_dari_buku_besar_per_akun(buku_besar_per_akun):
     """Update neraca saldo dari data buku besar per akun - VERSI DIPERBAIKI"""
     try:
@@ -1549,88 +1749,12 @@ def update_neraca_saldo_dari_buku_besar_per_akun(buku_besar_per_akun):
             
             neraca_final = pd.concat([neraca_saldo, pd.DataFrame([total_row])], ignore_index=True)
             st.session_state.df_neraca_saldo = neraca_final
+            print(f"✅ Neraca saldo diperbarui: {len(neraca_data)} akun")
             
     except Exception as e:
-        st.error(f"Error update neraca saldo: {str(e)}")
+        st.error(f"❌ Error update neraca saldo: {str(e)}")
         # Fallback: buat neraca saldo kosong
         st.session_state.df_neraca_saldo = pd.DataFrame(columns=["No", "Nama Akun", "Debit (Rp)", "Kredit (Rp)"])
-    """Update neraca saldo dari data buku besar per akun - VERSI DIPERBAIKI"""
-    try:
-        neraca_data = []
-        
-        for akun, df_akun in buku_besar_per_akun.items():
-            if not df_akun.empty:
-                # Pastikan tipe data numerik dengan safe_float_convert
-                total_debit = sum(df_akun["Debit (Rp)"].apply(safe_float_convert))
-                total_kredit = sum(df_akun["Kredit (Rp)"].apply(safe_float_convert))
-                saldo_akhir = safe_float_convert(df_akun["Saldo (Rp)"].iloc[-1]) if len(df_akun) > 0 else 0.0
-                
-                neraca_data.append({
-                    "Nama Akun": akun,
-                    "Debit (Rp)": total_debit,
-                    "Kredit (Rp)": total_kredit,
-                    "Saldo (Rp)": saldo_akhir
-                })
-        
-        if neraca_data:
-            neraca_saldo = pd.DataFrame(neraca_data)
-            # PERBAIKAN: Sorting dengan handle error
-            try:
-                neraca_saldo = neraca_saldo.sort_values("Nama Akun").reset_index(drop=True)
-            except:
-                # Fallback sorting jika ada error
-                neraca_saldo = neraca_saldo.reset_index(drop=True)
-            
-            neraca_saldo.insert(0, "No", range(1, len(neraca_saldo) + 1))
-            
-            # Tambahkan baris total dengan safe_float_convert
-            total_debit = sum(neraca_saldo["Debit (Rp)"].apply(safe_float_convert))
-            total_kredit = sum(neraca_saldo["Kredit (Rp)"].apply(safe_float_convert))
-            total_row = {
-                "No": "",
-                "Nama Akun": "TOTAL",
-                "Debit (Rp)": total_debit,
-                "Kredit (Rp)": total_kredit,
-                "Saldo (Rp)": ""
-            }
-            
-            neraca_final = pd.concat([neraca_saldo, pd.DataFrame([total_row])], ignore_index=True)
-            st.session_state.df_neraca_saldo = neraca_final
-            
-    except Exception as e:
-        st.error(f"Error update neraca saldo: {str(e)}")
-        # Fallback: buat neraca saldo kosong
-        st.session_state.df_neraca_saldo = pd.DataFrame(columns=["No", "Nama Akun", "Debit (Rp)", "Kredit (Rp)"])
-
-def update_neraca_saldo_dari_buku_besar(df_buku_besar):
-    """Update neraca saldo dari data buku besar"""
-    try:
-        # Group by akun untuk mendapatkan saldo akhir
-        saldo_akhir = df_buku_besar.groupby("Nama Akun").agg({
-            "Debit (Rp)": "sum",
-            "Kredit (Rp)": "sum",
-            "Saldo (Rp)": "last"  # Ambil saldo terakhir
-        }).reset_index()
-        
-        # Buat neraca saldo
-        neraca_saldo = saldo_akhir[["Nama Akun", "Debit (Rp)", "Kredit (Rp)"]].copy()
-        neraca_saldo.insert(0, "No", range(1, len(neraca_saldo) + 1))
-        
-        # Tambahkan baris total
-        total_debit = neraca_saldo["Debit (Rp)"].sum()
-        total_kredit = neraca_saldo["Kredit (Rp)"].sum()
-        total_row = {
-            "No": "",
-            "Nama Akun": "TOTAL",
-            "Debit (Rp)": total_debit,
-            "Kredit (Rp)": total_kredit
-        }
-        
-        neraca_final = pd.concat([neraca_saldo, pd.DataFrame([total_row])], ignore_index=True)
-        st.session_state.df_neraca_saldo = neraca_final
-        
-    except Exception as e:
-        st.error(f"Error update neraca saldo: {str(e)}")
     
 def update_setelah_penyesuaian():
     """
@@ -1740,6 +1864,237 @@ def update_buku_besar_dengan_data(data_transaksi):
         
     except Exception as e:
         st.error(f"Error dalam update_buku_besar_dengan_data: {str(e)}")
+        
+def update_buku_besar_per_akun_dengan_saldo_awal():
+    """Update buku besar dengan saldo awal dari neraca saldo periode sebelumnya - VERSI KOMPREHENSIF"""
+    try:
+        # Kumpulkan semua transaksi dari berbagai sumber
+        semua_transaksi = []
+        
+        # ========== 1. TAMBAHKAN SALDO AWAL DARI NERACA SALDO PERIODE SEBELUMNYA ==========
+        if "df_neraca_saldo_periode_sebelumnya" in st.session_state and not st.session_state.df_neraca_saldo_periode_sebelumnya.empty:
+            for _, row in st.session_state.df_neraca_saldo_periode_sebelumnya.iterrows():
+                nama_akun = row["Nama Akun"]
+                saldo_debit = safe_float_convert(row["Debit (Rp)"])
+                saldo_kredit = safe_float_convert(row["Kredit (Rp)"])
+                
+                # Hitung saldo awal (Debit - Kredit)
+                saldo_awal = saldo_debit - saldo_kredit
+                
+                if saldo_awal != 0:
+                    # Tambahkan sebagai transaksi saldo awal
+                    if saldo_awal > 0:
+                        semua_transaksi.append({
+                            "Tanggal": st.session_state.tanggal_awal_periode,
+                            "Sumber": "Saldo Awal",
+                            "Keterangan": f"Saldo Awal Periode {st.session_state.periode_sekarang}",
+                            "Nama Akun": nama_akun,
+                            "Debit (Rp)": saldo_awal,
+                            "Kredit (Rp)": 0.0,
+                            "No_Transaksi": 0  # Nomor khusus untuk saldo awal
+                        })
+                    else:
+                        semua_transaksi.append({
+                            "Tanggal": st.session_state.tanggal_awal_periode,
+                            "Sumber": "Saldo Awal", 
+                            "Keterangan": f"Saldo Awal Periode {st.session_state.periode_sekarang}",
+                            "Nama Akun": nama_akun,
+                            "Debit (Rp)": 0.0,
+                            "Kredit (Rp)": abs(saldo_awal),
+                            "No_Transaksi": 0
+                        })
+                    print(f"✅ Menambahkan saldo awal untuk {nama_akun}: {saldo_awal:,.0f}")
+
+        # ========== 2. TRANSAKSI DARI JURNAL UMUM ==========
+        if "df_jurnal_umum" in st.session_state and not st.session_state.df_jurnal_umum.empty:
+            for _, row in st.session_state.df_jurnal_umum.iterrows():
+                # Pastikan tipe data numerik dengan safe_float_convert
+                debit_val = safe_float_convert(row["Debit (Rp)"])
+                kredit_val = safe_float_convert(row["Kredit (Rp)"])
+                
+                # Entri Debit dari Jurnal Umum
+                if debit_val > 0:
+                    semua_transaksi.append({
+                        "Tanggal": row["Tanggal"],
+                        "Sumber": "Jurnal Umum",
+                        "Keterangan": f"Transaksi No {row['No']}",
+                        "Nama Akun": str(row["Akun Debit"]),
+                        "Debit (Rp)": debit_val,
+                        "Kredit (Rp)": 0.0,
+                        "No_Transaksi": safe_float_convert(row["No"], 0)
+                    })
+                
+                # Entri Kredit dari Jurnal Umum
+                if kredit_val > 0:
+                    semua_transaksi.append({
+                        "Tanggal": row["Tanggal"],
+                        "Sumber": "Jurnal Umum", 
+                        "Keterangan": f"Transaksi No {row['No']}",
+                        "Nama Akun": str(row["Akun Kredit"]),
+                        "Debit (Rp)": 0.0,
+                        "Kredit (Rp)": kredit_val,
+                        "No_Transaksi": safe_float_convert(row["No"], 0)
+                    })
+
+        # ========== 3. TRANSAKSI DARI JURNAL PENYESUAIAN ==========
+        if "df_jurnal_penyesuaian" in st.session_state and not st.session_state.df_jurnal_penyesuaian.empty:
+            for _, row in st.session_state.df_jurnal_penyesuaian.iterrows():
+                debit_val = safe_float_convert(row["Debit (Rp)"])
+                kredit_val = safe_float_convert(row["Kredit (Rp)"])
+                
+                # Entri Debit dari Penyesuaian
+                if debit_val > 0:
+                    semua_transaksi.append({
+                        "Tanggal": row["Tanggal"],
+                        "Sumber": "Jurnal Penyesuaian",
+                        "Keterangan": str(row["Keterangan"]),
+                        "Nama Akun": str(row["Akun Debit"]),
+                        "Debit (Rp)": debit_val,
+                        "Kredit (Rp)": 0.0,
+                        "No_Transaksi": safe_float_convert(row["No"], 0)
+                    })
+                
+                # Entri Kredit dari Penyesuaian
+                if kredit_val > 0:
+                    semua_transaksi.append({
+                        "Tanggal": row["Tanggal"],
+                        "Sumber": "Jurnal Penyesuaian",
+                        "Keterangan": str(row["Keterangan"]),
+                        "Nama Akun": str(row["Akun Kredit"]),
+                        "Debit (Rp)": 0.0,
+                        "Kredit (Rp)": kredit_val,
+                        "No_Transaksi": safe_float_convert(row["No"], 0)
+                    })
+
+        # ========== 4. TRANSAKSI DARI JURNAL PENUTUP ==========
+        if "df_jurnal_penutup" in st.session_state and not st.session_state.df_jurnal_penutup.empty:
+            for _, row in st.session_state.df_jurnal_penutup.iterrows():
+                debit_val = safe_float_convert(row["Debit (Rp)"])
+                kredit_val = safe_float_convert(row["Kredit (Rp)"])
+                
+                # Entri Debit dari Penutup
+                if debit_val > 0:
+                    semua_transaksi.append({
+                        "Tanggal": row["Tanggal"],
+                        "Sumber": "Jurnal Penutup",
+                        "Keterangan": str(row["Keterangan"]),
+                        "Nama Akun": str(row["Akun Debit"]),
+                        "Debit (Rp)": debit_val,
+                        "Kredit (Rp)": 0.0,
+                        "No_Transaksi": safe_float_convert(row["No"], 0)
+                    })
+                
+                # Entri Kredit dari Penutup
+                if kredit_val > 0:
+                    semua_transaksi.append({
+                        "Tanggal": row["Tanggal"],
+                        "Sumber": "Jurnal Penutup",
+                        "Keterangan": str(row["Keterangan"]),
+                        "Nama Akun": str(row["Akun Kredit"]),
+                        "Debit (Rp)": 0.0,
+                        "Kredit (Rp)": kredit_val,
+                        "No_Transaksi": safe_float_convert(row["No"], 0)
+                    })
+
+        # ========== 5. PROSES BUKU BESAR PER AKUN ==========
+        if not semua_transaksi:
+            st.session_state.df_buku_besar = pd.DataFrame(columns=[
+                "No", "Tanggal", "Sumber", "Keterangan", "Nama Akun", "Debit (Rp)", "Kredit (Rp)", "Saldo (Rp)"
+            ])
+            st.session_state.buku_besar_per_akun = {}
+            return
+
+        # Konversi ke DataFrame dengan validasi
+        df_semua_transaksi = pd.DataFrame(semua_transaksi)
+        
+        # PERBAIKAN: Validasi dan cleaning data sebelum processing
+        if not df_semua_transaksi.empty:
+            # Pastikan kolom tanggal dalam format yang benar
+            df_semua_transaksi['Tanggal'] = pd.to_datetime(df_semua_transaksi['Tanggal'], errors='coerce').dt.date
+            
+            # Pastikan tipe data numerik konsisten
+            df_semua_transaksi['Debit (Rp)'] = df_semua_transaksi['Debit (Rp)'].apply(safe_float_convert)
+            df_semua_transaksi['Kredit (Rp)'] = df_semua_transaksi['Kredit (Rp)'].apply(safe_float_convert)
+            df_semua_transaksi['No_Transaksi'] = df_semua_transaksi['No_Transaksi'].apply(lambda x: int(safe_float_convert(x, 0)))
+            
+            # Hapus baris dengan Nama Akun yang tidak valid
+            df_semua_transaksi = df_semua_transaksi[df_semua_transaksi['Nama Akun'].notna()]
+            df_semua_transaksi = df_semua_transaksi[df_semua_transaksi['Nama Akun'] != '']
+            
+            # Urutkan berdasarkan tanggal dan nama akun
+            df_semua_transaksi = df_semua_transaksi.sort_values(["Nama Akun", "Tanggal", "No_Transaksi"]).reset_index(drop=True)
+
+        # Buat struktur buku besar per akun
+        buku_besar_per_akun = {}
+        
+        # Kelompokkan transaksi per akun
+        for akun in df_semua_transaksi["Nama Akun"].unique():
+            transaksi_akun = df_semua_transaksi[df_semua_transaksi["Nama Akun"] == akun].copy()
+            transaksi_akun = transaksi_akun.sort_values(["Tanggal", "No_Transaksi"]).reset_index(drop=True)
+            
+            # Hitung saldo running untuk akun ini
+            saldo_running = 0.0
+            detail_akun = []
+            
+            for idx, transaksi in transaksi_akun.iterrows():
+                debit = safe_float_convert(transaksi["Debit (Rp)"])
+                kredit = safe_float_convert(transaksi["Kredit (Rp)"])
+                saldo_running += debit - kredit
+                
+                detail_akun.append({
+                    "No": idx + 1,
+                    "Tanggal": transaksi["Tanggal"],
+                    "Sumber": transaksi["Sumber"],
+                    "Keterangan": transaksi["Keterangan"],
+                    "No_Transaksi": int(transaksi["No_Transaksi"]),
+                    "Debit (Rp)": debit,
+                    "Kredit (Rp)": kredit,
+                    "Saldo (Rp)": saldo_running
+                })
+            
+            # Simpan detail akun
+            if detail_akun:  # Hanya simpan jika ada transaksi
+                buku_besar_per_akun[akun] = pd.DataFrame(detail_akun)
+
+        # Simpan ke session state
+        st.session_state.buku_besar_per_akun = buku_besar_per_akun
+        
+        # Juga simpan dalam format flat untuk kompatibilitas
+        semua_detail = []
+        for akun, df_akun in buku_besar_per_akun.items():
+            for _, row in df_akun.iterrows():
+                semua_detail.append({
+                    "No": int(row["No"]),
+                    "Tanggal": row["Tanggal"],
+                    "Sumber": row["Sumber"],
+                    "Keterangan": row["Keterangan"],
+                    "Nama Akun": akun,
+                    "Debit (Rp)": safe_float_convert(row["Debit (Rp)"]),
+                    "Kredit (Rp)": safe_float_convert(row["Kredit (Rp)"]),
+                    "Saldo (Rp)": safe_float_convert(row["Saldo (Rp)"])
+                })
+        
+        if semua_detail:
+            st.session_state.df_buku_besar = pd.DataFrame(semua_detail)
+        else:
+            st.session_state.df_buku_besar = pd.DataFrame(columns=[
+                "No", "Tanggal", "Sumber", "Keterangan", "Nama Akun", "Debit (Rp)", "Kredit (Rp)", "Saldo (Rp)"
+            ])
+        
+        # Update neraca saldo
+        update_neraca_saldo_dari_buku_besar_per_akun(buku_besar_per_akun)
+        
+        print(f"✅ Buku besar per akun diperbarui: {len(buku_besar_per_akun)} akun")
+        
+    except Exception as e:
+        st.error(f"Error dalam update_buku_besar_per_akun_dengan_saldo_awal: {str(e)}")
+        import traceback
+        st.error(f"Detail error: {traceback.format_exc()}")
+        # Fallback: buat buku besar kosong
+        st.session_state.df_buku_besar = pd.DataFrame(columns=[
+            "No", "Tanggal", "Sumber", "Keterangan", "Nama Akun", "Debit (Rp)", "Kredit (Rp)", "Saldo (Rp)"
+        ])
+        st.session_state.buku_besar_per_akun = {}
          
     
 def buat_neraca_saldo_manual():
@@ -1892,8 +2247,7 @@ def display_buku_besar_fixed():
         st.info("Silakan coba refresh halaman atau tambah transaksi di Jurnal Umum terlebih dahulu.")
     
     # Tampilkan informasi sumber data
-    st.info("""
-    **Buku Besar ini menggabungkan data dari:**
+    st.info("""**Buku Besar ini menggabungkan data dari:**
     - ✅ **Jurnal Umum** - Transaksi harian
     - ✅ **Jurnal Penyesuaian** - Penyesuaian periode  
     - ✅ **Jurnal Penutup** - Penutupan periode
@@ -1948,7 +2302,8 @@ def display_buku_besar_fixed():
                     use_container_width=True,
                     hide_index=True
                 )
-
+            else:
+                st.info("Tidak ada transaksi untuk akun ini.")
 
 def display_neraca_saldo_fixed():
     """Menampilkan neraca saldo dengan error handling yang lebih baik"""
@@ -2168,6 +2523,268 @@ def hitung_perubahan_modal_diperbaiki(laba_bersih):
         ]
         return pd.DataFrame(perubahan_modal_data)
     
+    
+def hitung_posisi_keuangan_selalu_seimbang():
+    """Menghitung laporan posisi keuangan yang selalu seimbang - VERSI OPTIMIZED"""
+    try:
+        # Dapatkan data dari buku besar per akun (lebih akurat)
+        if "buku_besar_per_akun" not in st.session_state or not st.session_state.buku_besar_per_akun:
+            st.info("📊 Data buku besar kosong. Pastikan sudah ada transaksi di Jurnal Umum.")
+            return buat_posisi_keuangan_kosong()
+        
+        buku_besar_per_akun = st.session_state.buku_besar_per_akun
+        
+        # ========== KLASIFIKASI AKUN YANG LEBIH LENGKAP ==========
+        akun_aset_lancar = [
+            "Kas", "Bank", "Deposito", "Investasi Jangka Pendek", 
+            "Piutang Usaha", "Piutang Dagang", "Piutang Lainnya",
+            "Persediaan", "Persediaan Barang Dagang", "Persediaan Bahan Baku",
+            "Persediaan Barang Dalam Proses", "Persediaan Barang Jadi",
+            "Perlengkapan", "Asuransi Dibayar Dimuka", "Sewa Dibayar Dimuka",
+            "Pajak Dibayar Dimuka", "Biaya Dibayar Dimuka", "Pendapatan Ditangguhkan"
+        ]
+        
+        akun_aset_tidak_lancar = [
+            "Tanah", "Gedung", "Bangunan", "Kendaraan", "Peralatan", "Mesin",
+            "Inventaris", "Akumulasi Penyusutan", "Aset Tetap Lainnya",
+            "Investasi Jangka Panjang", "Aset Tidak Berwujud", "Goodwill",
+            "Paten", "Merek Dagang", "Hak Cipta", "Aset Sewa Guna Usaha",
+            "Aset Biologis", "Aset biologis"  # untuk kompatibilitas
+        ]
+        
+        akun_liabilitas_jangka_pendek = [
+            "Utang Usaha", "Utang Dagang", "Utang Bank Jangka Pendek",
+            "Utang Wesel", "Utang Gaji", "Utang Pajak", "Utang Bunga",
+            "Utang Dividen", "Pendapatan Diterima Dimuka", "Biaya Akrual",
+            "Utang Jangka Pendek Lainnya", "Bagian Lancar Utang Jangka Panjang"
+        ]
+        
+        akun_liabilitas_jangka_panjang = [
+            "Utang Bank Jangka Panjang", "Utang Obligasi", "Utang Hipotek",
+            "Utang Sewa Guna Usaha", "Utang Pensiun", "Utang Jangka Panjang Lainnya"
+        ]
+        
+        akun_ekuitas = [
+            "Modal Saham", "Modal Disetor", "Agio Saham",
+            "Laba Ditahan", "Saldo Laba", "Deviden",
+            "Prive", "Modal Pemilik", "Modal",  # untuk kompatibilitas
+            "Ekuitas Lainnya", "Cadangan"
+        ]
+        
+        # Fungsi untuk mendapatkan saldo akhir akun
+        def get_saldo_akun(nama_akun):
+            if nama_akun in buku_besar_per_akun:
+                df_akun = buku_besar_per_akun[nama_akun]
+                if not df_akun.empty:
+                    return safe_float_convert(df_akun["Saldo (Rp)"].iloc[-1])
+            return 0
+        
+        # ========== KUMPULKAN DATA ASET ==========
+        aset_lancar_data = []
+        aset_tidak_lancar_data = []
+        total_aset_lancar = 0
+        total_aset_tidak_lancar = 0
+        
+        # Aset Lancar
+        for akun in akun_aset_lancar:
+            saldo = get_saldo_akun(akun)
+            if saldo > 0:  # Aset harus positif
+                aset_lancar_data.append({"Keterangan": akun, "Nilai (Rp)": saldo})
+                total_aset_lancar += saldo
+        
+        # Aset Tidak Lancar
+        for akun in akun_aset_tidak_lancar:
+            saldo = get_saldo_akun(akun)
+            # Untuk aset tetap dengan akumulasi penyusutan
+            if "Akumulasi Penyusutan" in akun and saldo != 0:
+                aset_tidak_lancar_data.append({"Keterangan": akun, "Nilai (Rp)": -saldo})
+                total_aset_tidak_lancar -= saldo
+            elif saldo > 0:  # Aset harus positif
+                aset_tidak_lancar_data.append({"Keterangan": akun, "Nilai (Rp)": saldo})
+                total_aset_tidak_lancar += saldo
+        
+        # ========== KUMPULKAN DATA LIABILITAS ==========
+        liabilitas_jangka_pendek_data = []
+        liabilitas_jangka_panjang_data = []
+        total_liabilitas_jangka_pendek = 0
+        total_liabilitas_jangka_panjang = 0
+        
+        # Liabilitas Jangka Pendek
+        for akun in akun_liabilitas_jangka_pendek:
+            saldo = get_saldo_akun(akun)
+            if saldo != 0:
+                # Liabilitas biasanya saldo kredit (negatif), tampilkan sebagai positif
+                nilai_liabilitas = abs(saldo) if saldo < 0 else saldo
+                liabilitas_jangka_pendek_data.append({"Keterangan": akun, "Nilai (Rp)": nilai_liabilitas})
+                total_liabilitas_jangka_pendek += nilai_liabilitas
+        
+        # Liabilitas Jangka Panjang
+        for akun in akun_liabilitas_jangka_panjang:
+            saldo = get_saldo_akun(akun)
+            if saldo != 0:
+                nilai_liabilitas = abs(saldo) if saldo < 0 else saldo
+                liabilitas_jangka_panjang_data.append({"Keterangan": akun, "Nilai (Rp)": nilai_liabilitas})
+                total_liabilitas_jangka_panjang += nilai_liabilitas
+        
+        total_liabilitas = total_liabilitas_jangka_pendek + total_liabilitas_jangka_panjang
+        
+        # ========== KUMPULKAN DATA EKUITAS ==========
+        ekuitas_data = []
+        total_ekuitas = 0
+        
+        # Ekuitas - gunakan data dari berbagai sumber
+        modal_akhir = getattr(st.session_state, 'modal_akhir', 0)
+        laba_bersih = getattr(st.session_state, 'laba_bersih', 0)
+        
+        # Jika modal_akhir belum ada, hitung dari saldo akun Modal
+        if modal_akhir == 0:
+            # Coba semua variasi akun modal
+            for akun_modal in ["Modal", "Modal Saham", "Modal Pemilik", "Modal Disetor"]:
+                modal_saldo = get_saldo_akun(akun_modal)
+                if modal_saldo != 0:
+                    modal_akhir = abs(modal_saldo) if modal_saldo < 0 else modal_saldo
+                    break
+        
+        # Tambahkan modal ke ekuitas
+        if modal_akhir > 0:
+            ekuitas_data.append({"Keterangan": "Modal", "Nilai (Rp)": modal_akhir})
+            total_ekuitas += modal_akhir
+        
+        # Tambahkan laba bersih ke ekuitas (sebagai Laba Ditahan)
+        if laba_bersih != 0:
+            ekuitas_data.append({"Keterangan": "Laba (Rugi) Ditahan", "Nilai (Rp)": laba_bersih})
+            total_ekuitas += laba_bersih
+        
+        # Tambahkan akun ekuitas lainnya yang ada saldonya
+        for akun in akun_ekuitas:
+            if akun not in ["Modal", "Modal Saham", "Modal Pemilik", "Modal Disetor"]:
+                saldo = get_saldo_akun(akun)
+                if saldo != 0:
+                    nilai_ekuitas = abs(saldo) if saldo < 0 else saldo
+                    ekuitas_data.append({"Keterangan": akun, "Nilai (Rp)": nilai_ekuitas})
+                    total_ekuitas += nilai_ekuitas
+        
+        # ========== HITUNG TOTAL DAN VALIDASI KESEIMBANGAN ==========
+        total_aset = total_aset_lancar + total_aset_tidak_lancar
+        total_liabilitas_ekuitas = total_liabilitas + total_ekuitas
+        
+        # VALIDASI KESEIMBANGAN - METODE OTOMATIS
+        selisih = total_aset - total_liabilitas_ekuitas
+        
+        if abs(selisih) > 1:  # Toleransi 1 rupiah untuk rounding error
+            st.warning(f"⚠️ Ditemukan ketidakseimbangan: Rp {selisih:,.0f}")
+            
+            # PENYESUAIAN OTOMATIS: Tambahkan ke Laba Ditahan
+            if abs(selisih) > 1:
+                # Cari apakah sudah ada Laba Ditahan
+                laba_ditahan_index = None
+                for i, item in enumerate(ekuitas_data):
+                    if item["Keterangan"] == "Laba (Rugi) Ditahan":
+                        laba_ditahan_index = i
+                        break
+                
+                if laba_ditahan_index is not None:
+                    # Update existing Laba Ditahan
+                    ekuitas_data[laba_ditahan_index]["Nilai (Rp)"] += selisih
+                else:
+                    # Tambahkan baru Laba Ditahan
+                    ekuitas_data.append({"Keterangan": "Laba (Rugi) Ditahan", "Nilai (Rp)": selisih})
+                
+                total_ekuitas += selisih
+                total_liabilitas_ekuitas += selisih
+                
+                st.info(f"✅ Dilakukan penyesuaian otomatis: Laba Ditahan {'ditambah' if selisih > 0 else 'dikurangi'} Rp {abs(selisih):,.0f}")
+        
+        # ========== BUAT LAPORAN POSISI KEUANGAN ==========
+        posisi_keuangan_data = []
+        
+        # Bagian Aset
+        posisi_keuangan_data.append({"Keterangan": "**ASET**", "Nilai (Rp)": ""})
+        
+        # Aset Lancar
+        if aset_lancar_data:
+            posisi_keuangan_data.append({"Keterangan": "**Aset Lancar**", "Nilai (Rp)": ""})
+            for item in aset_lancar_data:
+                posisi_keuangan_data.append(item)
+            posisi_keuangan_data.append({"Keterangan": "**Total Aset Lancar**", "Nilai (Rp)": total_aset_lancar})
+        else:
+            posisi_keuangan_data.append({"Keterangan": "**Aset Lancar**", "Nilai (Rp)": ""})
+            posisi_keuangan_data.append({"Keterangan": "Tidak ada aset lancar", "Nilai (Rp)": ""})
+            posisi_keuangan_data.append({"Keterangan": "**Total Aset Lancar**", "Nilai (Rp)": 0})
+        
+        # Aset Tidak Lancar
+        if aset_tidak_lancar_data:
+            posisi_keuangan_data.append({"Keterangan": "**Aset Tidak Lancar**", "Nilai (Rp)": ""})
+            for item in aset_tidak_lancar_data:
+                posisi_keuangan_data.append(item)
+            posisi_keuangan_data.append({"Keterangan": "**Total Aset Tidak Lancar**", "Nilai (Rp)": total_aset_tidak_lancar})
+        else:
+            posisi_keuangan_data.append({"Keterangan": "**Aset Tidak Lancar**", "Nilai (Rp)": ""})
+            posisi_keuangan_data.append({"Keterangan": "Tidak ada aset tidak lancar", "Nilai (Rp)": ""})
+            posisi_keuangan_data.append({"Keterangan": "**Total Aset Tidak Lancar**", "Nilai (Rp)": 0})
+        
+        posisi_keuangan_data.append({"Keterangan": "**TOTAL ASET**", "Nilai (Rp)": total_aset})
+        posisi_keuangan_data.append({"Keterangan": "", "Nilai (Rp)": ""})
+        
+        # Bagian Liabilitas dan Ekuitas
+        posisi_keuangan_data.append({"Keterangan": "**LIABILITAS & EKUITAS**", "Nilai (Rp)": ""})
+        
+        # Liabilitas Jangka Pendek
+        if liabilitas_jangka_pendek_data:
+            posisi_keuangan_data.append({"Keterangan": "**Liabilitas Jangka Pendek**", "Nilai (Rp)": ""})
+            for item in liabilitas_jangka_pendek_data:
+                posisi_keuangan_data.append(item)
+            posisi_keuangan_data.append({"Keterangan": "**Total Liabilitas Jangka Pendek**", "Nilai (Rp)": total_liabilitas_jangka_pendek})
+        else:
+            posisi_keuangan_data.append({"Keterangan": "**Liabilitas Jangka Pendek**", "Nilai (Rp)": ""})
+            posisi_keuangan_data.append({"Keterangan": "Tidak ada liabilitas jangka pendek", "Nilai (Rp)": ""})
+            posisi_keuangan_data.append({"Keterangan": "**Total Liabilitas Jangka Pendek**", "Nilai (Rp)": 0})
+        
+        # Liabilitas Jangka Panjang
+        if liabilitas_jangka_panjang_data:
+            posisi_keuangan_data.append({"Keterangan": "**Liabilitas Jangka Panjang**", "Nilai (Rp)": ""})
+            for item in liabilitas_jangka_panjang_data:
+                posisi_keuangan_data.append(item)
+            posisi_keuangan_data.append({"Keterangan": "**Total Liabilitas Jangka Panjang**", "Nilai (Rp)": total_liabilitas_jangka_panjang})
+        else:
+            posisi_keuangan_data.append({"Keterangan": "**Liabilitas Jangka Panjang**", "Nilai (Rp)": ""})
+            posisi_keuangan_data.append({"Keterangan": "Tidak ada liabilitas jangka panjang", "Nilai (Rp)": ""})
+            posisi_keuangan_data.append({"Keterangan": "**Total Liabilitas Jangka Panjang**", "Nilai (Rp)": 0})
+        
+        posisi_keuangan_data.append({"Keterangan": "**TOTAL LIABILITAS**", "Nilai (Rp)": total_liabilitas})
+        posisi_keuangan_data.append({"Keterangan": "", "Nilai (Rp)": ""})
+        
+        # Ekuitas
+        if ekuitas_data:
+            posisi_keuangan_data.append({"Keterangan": "**Ekuitas**", "Nilai (Rp)": ""})
+            for item in ekuitas_data:
+                posisi_keuangan_data.append(item)
+            posisi_keuangan_data.append({"Keterangan": "**Total Ekuitas**", "Nilai (Rp)": total_ekuitas})
+        else:
+            posisi_keuangan_data.append({"Keterangan": "**Ekuitas**", "Nilai (Rp)": ""})
+            posisi_keuangan_data.append({"Keterangan": "Tidak ada ekuitas", "Nilai (Rp)": ""})
+            posisi_keuangan_data.append({"Keterangan": "**Total Ekuitas**", "Nilai (Rp)": 0})
+        
+        total_liabilitas_ekuitas = total_liabilitas + total_ekuitas
+        posisi_keuangan_data.append({"Keterangan": "**TOTAL LIABILITAS & EKUITAS**", "Nilai (Rp)": total_liabilitas_ekuitas})
+        
+        # Final validation
+        final_selisih = abs(total_aset - total_liabilitas_ekuitas)
+        if final_selisih <= 1:
+            st.success("✅ Laporan Posisi Keuangan SEIMBANG")
+        else:
+            st.error(f"❌ Laporan Posisi Keuangan TIDAK SEIMBANG - Selisih: Rp {final_selisih:,.0f}")
+        
+        df_posisi_keuangan = pd.DataFrame(posisi_keuangan_data)
+        st.session_state.df_laporan_posisi_keuangan = df_posisi_keuangan
+        
+        return df_posisi_keuangan
+        
+    except Exception as e:
+        st.error(f"Error dalam hitung_posisi_keuangan_selalu_seimbang: {str(e)}")
+        import traceback
+        st.error(f"Detail error: {traceback.format_exc()}")
+        return buat_posisi_keuangan_kosong()
 
 def buat_posisi_keuangan_kosong():
     """Membuat laporan posisi keuangan kosong dengan struktur yang benar"""
@@ -2197,6 +2814,21 @@ def buat_posisi_keuangan_kosong():
         {"Keterangan": "**TOTAL LIABILITAS & EKUITAS**", "Nilai (Rp)": 0}
     ]
     return pd.DataFrame(posisi_keuangan_data)
+
+def init_sistem_periode():
+    """Inisialisasi sistem periode dengan data contoh"""
+    # Pastikan neraca saldo periode sebelumnya ada data
+    if st.session_state.df_neraca_saldo_periode_sebelumnya.empty:
+        # Data contoh untuk periode pertama
+        contoh_data = [
+            {"No": 1, "Nama Akun": "Kas", "Debit (Rp)": 100000000, "Kredit (Rp)": 0},
+            {"No": 2, "Nama Akun": "Persediaan", "Debit (Rp)": 50000000, "Kredit (Rp)": 0},
+            {"No": 3, "Nama Akun": "Peralatan", "Debit (Rp)": 75000000, "Kredit (Rp)": 0},
+            {"No": 4, "Nama Akun": "Utang Usaha", "Debit (Rp)": 0, "Kredit (Rp)": 45000000},
+            {"No": 5, "Nama Akun": "Modal", "Debit (Rp)": 0, "Kredit (Rp)": 180000000},
+        ]
+        st.session_state.df_neraca_saldo_periode_sebelumnya = pd.DataFrame(contoh_data)
+        print("✅ Data contoh neraca saldo periode sebelumnya berhasil diinisialisasi")
 
 
 def hitung_posisi_keuangan_diperbaiki():
@@ -2689,18 +3321,22 @@ def hitung_posisi_keuangan(df_buku_besar):
         return pd.DataFrame(columns=["Nama Akun", "Kategori", "Saldo (Rp)"])
     
     
+# Ganti fungsi yang lama dengan yang baru di aplikasi utama
 def update_semua_laporan_keuangan():
     """Memperbarui semua laporan keuangan secara berurutan - VERSI DIPERBAIKI"""
     try:
         with st.spinner("Memperbarui laporan keuangan..."):
-            # 1. Hitung Laba Rugi
+            # 1. Update buku besar dengan saldo awal
+            update_buku_besar_per_akun_dengan_saldo_awal()
+            
+            # 2. Hitung Laba Rugi
             pendapatan, beban, laba_bersih, df_laba_rugi = hitung_laba_rugi_diperbaiki()
             
-            # 2. Hitung Perubahan Modal
+            # 3. Hitung Perubahan Modal
             df_perubahan_modal = hitung_perubahan_modal_diperbaiki(laba_bersih)
             
-            # 3. Hitung Posisi Keuangan
-            df_posisi_keuangan = hitung_posisi_keuangan_diperbaiki()
+            # 4. Hitung Posisi Keuangan (yang selalu seimbang)
+            df_posisi_keuangan = hitung_posisi_keuangan_selalu_seimbang()
             
             # Simpan timestamp update
             st.session_state.last_report_update = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -2710,6 +3346,9 @@ def update_semua_laporan_keuangan():
     except Exception as e:
         st.error(f"Error dalam update_semua_laporan_keuangan: {str(e)}")
         return False
+
+# Panggil inisialisasi di awal
+init_sistem_periode()
     
 def tampilkan_laporan_laba_rugi():
     """Menampilkan laporan laba rugi dengan format yang rapi"""
@@ -4358,6 +4997,14 @@ with st.sidebar:
             st.rerun()
         else:
             st.error("Gagal reset penomoran")
+            
+    # Inisialisasi sistem yang diperbaiki
+if "system_initialized_fixed" not in st.session_state:
+    print("🔄 Initializing fixed system...")
+    init_session_state_fixed()
+    load_from_database()  # Jika fungsi ini sudah ada
+    st.session_state.system_initialized_fixed = True
+    print("✅ Fixed system initialization completed")
 
 # Navigasi sidebar
 with st.sidebar:
@@ -4608,11 +5255,46 @@ elif selected == "Jurnal Umum":
     
     # DAFTAR AKUN YANG DIPERBARUI
     daftar_akun = [
-        "Kas", "Persediaan", "Perlengkapan", "Peralatan", "Asuransi dibayar dimuka", "Sewa Dibayar Dimuka", 
-        "Kendaraan", "Tanah", "Piutang", "Aset biologis",
-        "Utang Usaha", "Utang Bank", "Utang Gaji",
-        "Modal", "Penjualan", "Pendapatan", "Harga Pokok Penjualan", "Beban Asuransi", "Beban Sewa", 
-        "Beban listrik dan air", "Beban transportasi", "Beban gaji", "Beban Lain"
+        "Kas", "Bank", "Deposito", "Investasi Jangka Pendek", 
+    "Piutang Usaha", "Piutang Dagang", "Piutang Lainnya",
+    "Persediaan", "Persediaan Barang Dagang", "Persediaan Bahan Baku",
+    "Persediaan Barang Dalam Proses", "Persediaan Barang Jadi",
+    "Perlengkapan", "Asuransi Dibayar Dimuka", "Sewa Dibayar Dimuka",
+    "Pajak Dibayar Dimuka", "Biaya Dibayar Dimuka", "Pendapatan Ditangguhkan",
+    
+    # Aset Tidak Lancar
+    "Tanah", "Gedung", "Bangunan", "Kendaraan", "Peralatan", "Mesin",
+    "Inventaris", "Akumulasi Penyusutan", "Aset Tetap Lainnya",
+    "Investasi Jangka Panjang", "Aset Tidak Berwujud", "Goodwill",
+    "Paten", "Merek Dagang", "Hak Cipta", "Aset Sewa Guna Usaha",
+    "Aset Biologis",
+    
+    # Liabilitas Jangka Pendek
+    "Utang Usaha", "Utang Dagang", "Utang Bank Jangka Pendek",
+    "Utang Wesel", "Utang Gaji", "Utang Pajak", "Utang Bunga",
+    "Utang Dividen", "Pendapatan Diterima Dimuka", "Biaya Akrual",
+    "Utang Jangka Pendek Lainnya", "Bagian Lancar Utang Jangka Panjang",
+    
+    # Liabilitas Jangka Panjang
+    "Utang Bank Jangka Panjang", "Utang Obligasi", "Utang Hipotek",
+    "Utang Sewa Guna Usaha", "Utang Pensiun", "Utang Jangka Panjang Lainnya",
+    
+    # Ekuitas
+    "Modal Saham", "Modal Disetor", "Agio Saham",
+    "Laba Ditahan", "Saldo Laba", "Deviden",
+    "Prive", "Modal Pemilik", "Modal",
+    "Ekuitas Lainnya", "Cadangan",
+    
+    # Pendapatan
+    "Penjualan", "Pendapatan Jasa", "Pendapatan Lain-lain",
+    "Pendapatan Bunga", "Pendapatan Sewa",
+    
+    # Beban
+    "Harga Pokok Penjualan", "Beban Gaji", "Beban Sewa",
+    "Beban Listrik dan Air", "Beban Transportasi", "Beban Lain-lain",
+    "Beban Asuransi", "Beban Penyusutan", "Beban Bunga",
+    "Beban Pajak", "Beban Administrasi", "Beban Pemeliharaan",
+    "Beban Perlengkapan", "Beban Iklan", "Beban Research dan Development"
     ]
     
     # TAB UNTUK SINGLE ENTRY DAN DOUBLE ENTRY
@@ -5448,7 +6130,7 @@ elif selected == "Jurnal Penyesuaian":
                             st.session_state.df_jurnal_penyesuaian = df_setelah_hapus
                             
                             # Update sistem
-                            update_buku_besar_per_akun()
+                            update_buku_besar_per_akun_fixed()
                             auto_save()
                             
                             st.success("Jurnal penyesuaian berhasil dihapus!")

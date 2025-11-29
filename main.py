@@ -12,9 +12,8 @@ warnings.filterwarnings('ignore')
 
 st.set_page_config(
     page_title="🐓SIMAYA🐓",
-    page_icon="🐓",
     layout="wide",
-    initial_sidebar_state="expanded"
+    
 )
 
 def export_to_excel():
